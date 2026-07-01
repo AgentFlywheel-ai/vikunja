@@ -37,10 +37,15 @@ navigator?.serviceWorker?.addEventListener(
 )
 
 function showRefreshUI(e: Event) {
-	console.log('recieved refresh event', e)
+	// afai fork: suppress the "There is an update available! UPDATE NOW" banner. This is
+	// the PWA service-worker new-build prompt — it fires whenever we deploy a new frontend
+	// build (i.e. every fork rebuild). On a managed instance we don't want humans prompted
+	// to update; the new frontend still activates silently on the next natural full reload
+	// (waiting SW). We keep the registration ref so refreshApp() stays valid, but never
+	// flip updateAvailable, so the banner never renders.
 	const customEvent = e as CustomEvent<ServiceWorkerRegistration>
 	registration.value = customEvent.detail
-	baseStore.setUpdateAvailable(true)
+	// baseStore.setUpdateAvailable(true)  // suppressed (afai)
 }
 
 function refreshApp() {
