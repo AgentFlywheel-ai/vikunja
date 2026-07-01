@@ -6,10 +6,24 @@
 					v-if="task.hexColor !== ''"
 					:color="getHexColor(task.hexColor)"
 				/>
-				<BaseButton @click="copyUrl">
-					<span class="title task-id">
-						{{ textIdentifier }}
+				<!-- afai fork: the GLOBAL task id (the /tasks/N URL + API id) is the primary
+				     identifier — it's what we reference everywhere. See AgentFlywheel-ai/vikunja.
+				     Upstream moved this element h1→span (task title is the sole h1); we keep span. -->
+				<BaseButton
+					title="Global task id — the number in the URL (/tasks/N) and the API. Click to copy."
+					@click="copyGlobalId"
+				>
+					<span class="title task-id task-global-id">
+						#{{ task.id }}
 					</span>
+				</BaseButton>
+				<!-- per-project #index, de-emphasized -->
+				<BaseButton
+					class="task-project-index"
+					title="Per-project index. Click to copy the task URL."
+					@click="copyUrl"
+				>
+					{{ textIdentifier }}
 				</BaseButton>
 			</div>
 			<Done
@@ -100,6 +114,12 @@ async function copyUrl() {
 	const absoluteURL = new URL(route.href, window.location.href).href
 
 	await copy(absoluteURL)
+}
+
+// afai fork: copy the global task id (the /tasks/N URL + API id) — the reference we
+// use everywhere, distinct from the per-project #index.
+async function copyGlobalId() {
+	await copy(String(props.task.id))
 }
 
 const taskStore = useTaskStore()
@@ -203,6 +223,21 @@ async function cancel(element: HTMLInputElement) {
 .title.task-id {
 	color: var(--grey-400);
 	white-space: nowrap;
+}
+
+// afai fork: the GLOBAL id is the primary identifier — prominent (default text color,
+// bold), overriding the muted .task-id above.
+.title.task-global-id {
+	color: var(--text);
+	font-weight: 700;
+}
+
+// afai fork: the per-project #index is de-emphasized — smaller + muted, after the global id.
+.task-project-index {
+	color: var(--grey-400);
+	font-size: .8rem;
+	white-space: nowrap;
+	margin-inline-start: .5rem;
 }
 
 .color-bubble {
