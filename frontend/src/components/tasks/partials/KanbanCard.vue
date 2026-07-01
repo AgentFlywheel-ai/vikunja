@@ -29,12 +29,12 @@
 						:is-done="task.done"
 						variant="small"
 					/>
-					<template v-if="task.identifier === ''">
-						#{{ task.index }}
-					</template>
-					<template v-else>
-						{{ task.identifier }}
-					</template>
+					<!-- afai fork: ID:<global id> primary, per-project #index smaller/muted -->
+					ID:{{ task.id }}
+					<span class="task-project-index">
+						<template v-if="task.identifier === ''">#{{ task.index }}</template>
+						<template v-else>{{ task.identifier }}</template>
+					</span>
 					<span
 						v-if="showTaskPosition"
 						class="tw:text-red-600 tw:ps-2"
@@ -338,6 +338,13 @@ $task-background: var(--white);
 		font-size: .8rem;
 		margin-block-end: .25rem;
 		display: flex;
+	}
+
+	// afai fork: per-project #index shown smaller/muted next to the primary ID:<global id>
+	.task-id .task-project-index {
+		font-size: .85em;
+		opacity: .65;
+		margin-inline-start: .35rem;
 	}
 
 	&.is-moving {

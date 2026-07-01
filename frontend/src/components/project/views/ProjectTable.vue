@@ -198,12 +198,12 @@
 								>
 									<td v-if="activeColumns.index">
 										<RouterLink :to="taskDetailRoutes[t.id]">
-											<template v-if="t.identifier === ''">
-												#{{ t.index }}
-											</template>
-											<template v-else>
-												{{ t.identifier }}
-											</template>
+											<!-- afai fork: ID:<global id> primary, per-project #index smaller/muted -->
+											ID:{{ t.id }}
+											<span class="task-project-index">
+												<template v-if="t.identifier === ''">#{{ t.index }}</template>
+												<template v-else>{{ t.identifier }}</template>
+											</span>
 										</RouterLink>
 									</td>
 									<td v-if="activeColumns.done">
@@ -466,5 +466,12 @@ const taskDetailRoutes = computed(() => Object.fromEntries(
 
 .filter-container :deep(.popup) {
 	inset-block-start: 7rem;
+}
+
+// afai fork: per-project #index shown smaller/muted next to the primary ID:<global id>
+.task-project-index {
+	font-size: .85em;
+	opacity: .65;
+	margin-inline-start: .35rem;
 }
 </style>

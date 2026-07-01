@@ -22,7 +22,8 @@
 				<div class="task-glance-content">
 					<div class="task-glance-header">
 						<div class="task-glance-title-section">
-							<span class="task-identifier">{{ taskIdentifier }}</span>
+							<!-- afai fork: ID:<global id> primary, per-project #index smaller/muted -->
+						<span class="task-identifier">ID:{{ task.id }} <span class="task-project-index">{{ taskIdentifier }}</span></span>
 							<span class="task-title">{{ task.title }}</span>
 						</div>
 						<div class="task-glance-indicators">
@@ -248,6 +249,13 @@ onUnmounted(() => {
 	font-weight: 600;
 	color: var(--text);
 	word-wrap: break-word;
+}
+
+// afai fork: per-project #index shown smaller/muted next to the primary ID:<global id>
+.task-project-index {
+	font-size: .85em;
+	opacity: .65;
+	margin-inline-start: .25rem;
 }
 
 .task-glance-description {

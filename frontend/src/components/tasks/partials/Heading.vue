@@ -14,7 +14,7 @@
 					@click="copyGlobalId"
 				>
 					<span class="title task-id task-global-id">
-						#{{ task.id }}
+						ID:{{ task.id }}
 					</span>
 				</BaseButton>
 				<!-- per-project #index, de-emphasized -->
